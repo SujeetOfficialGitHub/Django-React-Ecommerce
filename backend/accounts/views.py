@@ -11,9 +11,10 @@ from accounts.serializers import (
     SignupSerializer,
     LoginSerializer,
     ProfileSerializer,
+    ChangePasswordSerializer,
 )
-# Create your views here.
 
+# Token generator function 
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
 
@@ -22,7 +23,7 @@ def get_tokens_for_user(user):
         'access': str(refresh.access_token),
     }
     
-# User signup page 
+# User signup class 
 class SignupView(APIView):
     renderer_classes = [UserRenderer]
     def post(self, request, format=None):
@@ -31,7 +32,8 @@ class SignupView(APIView):
         user = serializer.save()
         token = get_tokens_for_user(user)
         return Response({'token': token, 'message': 'Signup successfully'}, status=status.HTTP_201_CREATED)
-        
+  
+# User login class   
 class LoginView(APIView):
     renderer_classes = [UserRenderer]
     def post(self, request, format=None):
@@ -46,10 +48,23 @@ class LoginView(APIView):
         else:
             return Response({'errors': {'non_field_errors': ['Email or password is not valid']}}, status=status.HTTP_400_BAD_REQUEST)
 
+# User Profile class
 class ProfileView(APIView):
-    renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
+    renderer_classes = [UserRenderer]
     def get(self, request, format=None):
         serializer = ProfileSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
-        
+    
+# User change password class      
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [UserRenderer]
+    def post(self, request, format=None):
+        serializer = ChangePasswordSerializer(data= request.data, context={'user': request.user})
+        serializer.is_valid(raise_exception=True)
+        return Response({'message': 'Password changed successfully'})
+    
+    
+    
+    
