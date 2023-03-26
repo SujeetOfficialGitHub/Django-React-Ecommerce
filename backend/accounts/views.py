@@ -12,6 +12,8 @@ from accounts.serializers import (
     LoginSerializer,
     ProfileSerializer,
     ChangePasswordSerializer,
+    SendPasswordResetEmailSerializer,
+    ResetPasswordSerializer
 )
 
 # Token generator function 
@@ -65,6 +67,18 @@ class ChangePasswordView(APIView):
         serializer.is_valid(raise_exception=True)
         return Response({'message': 'Password changed successfully'})
     
+# User send password reset mail class
+class SendPasswordResetEmailView(APIView):
+    renderer_classes = [UserRenderer]
+    def post(self, request, format=None):
+        serializer = SendPasswordResetEmailSerializer(data= request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response({'message': "Password reset link send. Please check your email"}, status=status.HTTP_200_OK)
     
-    
-    
+# User reset password class
+class ResetPasswordView(APIView):
+    renderer_classes = [UserRenderer]
+    def post(self, request, uid, token, format=None):
+        serializer = ResetPasswordSerializer(data=request.data, context={'uid': uid, 'token': token})
+        serializer.is_valid(raise_exception=True)
+        return Response({'message': 'Password reset successfully'}, status=status.HTTP_200_OK)
