@@ -6,6 +6,7 @@ import {FaFacebookSquare} from 'react-icons/fa'
 import {BsInstagram, BsLinkedin} from 'react-icons/bs'
 const Footer = () => {
   return (
+    <>
     <div className='bg-dark'>
         <Container>
             <Row  className={`text-light ${classes.footer}`}>
@@ -34,7 +35,12 @@ const Footer = () => {
                 </Col>
             </Row>
         </Container>
+
     </div>
+    <div className="bg-dark mt-1 p-3 text-center">
+        <h5 className={classes['credit-name']}>Developed by <span>Sujeet Kushwaha</span></h5>
+    </div>
+    </>
   )
 }
 

@@ -9,6 +9,7 @@ import classes from './Signup.module.css'
 import ButtonBox from '../../components/ui/ButtonBox'
 import { signup } from '../../app/features/authSlice'
 
+
 const Signup = () => {
     const [error, setError] = useState('')
     const [enteredName, setEnteredName] = useState('')
@@ -29,7 +30,7 @@ const Signup = () => {
         }
     }
 
-    const signupHandler = (e) => {
+    const signupHandler = async(e) => {
         e.preventDefault()
         if (enteredName.trim().length < 3){
             setError('Name must be 3 and more charachers')
@@ -49,23 +50,44 @@ const Signup = () => {
                 tc: tc
             }
             try{
-                dispatch(signup({enteredData}))
-                navigate('/login')
+                const res = await dispatch(signup({enteredData}))
+                if (res.error){
+                    if (res.payload.email){
+                        setError(res.payload.email[0])
+                    }else if(res.payload.non_field_errors){
+                        setError(res.payload.non_field_errors[0])
+                    }else{
+                        setError('Request failed')
+                    }
+                    return;
+                }else{
+                    // After form submit set field empty
+                    setEnteredName('')
+                    setEnteredEmail('')
+                    setEnteredPassword('')
+                    setEnteredCPassword('')
+                    acceptTermsRef.current.checked = false
+                    navigate('/login')
+
+                }  
             }catch(error){
                 console.log(error)
             }
         }
     }
+
+    // After 15s hide error message 
     if (error){
         setTimeout(() => {
             setError('')
-        },10000)
+        },15000)
     }
-  return (
+    return (
     <ContainerBox className={classes.signup}>
         <div className="border p-4">
             <h3 className='text-center'>Sign up</h3>
-            {error && <p className='text-light bg-danger text-center p-1'>{error}</p>}
+            {error && <p className='error'>{error}</p>}
+    
             <Form onSubmit={signupHandler}>
                 <InputBox 
                     label="Name"

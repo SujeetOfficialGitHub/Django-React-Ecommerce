@@ -1,5 +1,5 @@
 import React from 'react'
-import {NavLink} from 'react-router-dom'
+import {NavLink, useNavigate} from 'react-router-dom'
 import {Navbar, Container, Form, Button, Nav, NavDropdown} from 'react-bootstrap'
 import {HiShoppingCart} from 'react-icons/hi'
 import {FaUserAlt} from 'react-icons/fa'
@@ -9,9 +9,11 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const Header = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const isLoggedIn = useSelector(state => state.auth.isAuthenticated)
     const logoutHandler = () => {
         dispatch(authActions.logout())
+        navigate('/login')
     }
   return (
     <Navbar bg="dark" variant="dark p-3" sticky="top">
@@ -31,7 +33,7 @@ const Header = () => {
                 <Button className={classes['header-cart-icon']}><HiShoppingCart/></Button>
                 <Nav className={classes['header-user-icon']}>
                     <NavDropdown title={<FaUserAlt/>}  id="collasible-nav-dropdown"  align="end">
-                        <NavDropdown.Item as="div" className='bg-dark'>
+                        <NavDropdown.Item as="div" className='bg-dark border border-success rounded'>
                             {isLoggedIn && <NavLink to="/profile" className="nav-link">Profile</NavLink>}
                             {isLoggedIn && <NavLink to="/change-password" className="nav-link">Change Password</NavLink>}
                             {!isLoggedIn && <NavLink to="/signup" className="nav-link">Sign up</NavLink>}

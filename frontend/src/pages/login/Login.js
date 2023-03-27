@@ -26,7 +26,7 @@ const Login = () => {
       }
     }
     
-    const loginHandler = (e) => {
+    const loginHandler = async(e) => {
         e.preventDefault()
         if (enteredEmail.trim().length < 9 || !enteredEmail.includes('@')){
             setError('Please enter a valid email')
@@ -38,23 +38,44 @@ const Login = () => {
                 password: enteredPassword,
             }
             try{
-                dispatch(login({enteredData}))
-                navigate('/')
+                const res = await dispatch(login({enteredData}))
+                if (res.error){
+                    if (res.payload.email){
+                        setError(res.payload.email[0])
+                    }else if(res.payload.non_field_errors){
+                        setError(res.payload.non_field_errors[0])
+                    }else{
+                        setError('Request failed')
+                    }
+                    return;
+                }else{
+                    // After form submit set field empty
+                    setEnteredEmail('')
+                    setEnteredPassword('')
+                    navigate('/login')
+
+                }  
             }catch(error){
                 console.log(error)
             }
+
+
         }
     }
+
+    // After 15s hide error message 
     if (error){
         setTimeout(() => {
             setError('')
-        },10000)
+        },15000)
     }
   return (
     <ContainerBox className={classes.login}>
         <div className="border p-4">
             <h3 className='text-center'>Login</h3>
-            {error && <p className='text-light bg-danger text-center p-1'>{error}</p>}
+            {error && <p className='error'>{error}</p>}
+    
+            
             <Form onSubmit={loginHandler}>
                 <InputBox 
                     label="Email"

@@ -20,3 +20,17 @@ html{
 .dropdown-menu{
   padding: 0;
 }
+.error{
+  color: white;
+  background: rgb(232, 85, 85);
+  padding: 2px;
+  text-align: center;
+  text-transform: capitalize;
+}
+.success{
+  color: white;
+  background: rgb(36, 149, 85);
+  padding: 2px;
+  text-align: center;
+  text-transform: capitalize;
+}
