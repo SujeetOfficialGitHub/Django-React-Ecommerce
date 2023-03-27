@@ -4,8 +4,15 @@ import {Navbar, Container, Form, Button, Nav, NavDropdown} from 'react-bootstrap
 import {HiShoppingCart} from 'react-icons/hi'
 import {FaUserAlt} from 'react-icons/fa'
 import classes from './Header.module.css'
+import { authActions } from '../../app/features/authSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Header = () => {
+    const dispatch = useDispatch()
+    const isLoggedIn = useSelector(state => state.auth.isAuthenticated)
+    const logoutHandler = () => {
+        dispatch(authActions.logout())
+    }
   return (
     <Navbar bg="dark" variant="dark p-3" sticky="top">
         <Container>
@@ -25,11 +32,11 @@ const Header = () => {
                 <Nav className={classes['header-user-icon']}>
                     <NavDropdown title={<FaUserAlt/>}  id="collasible-nav-dropdown"  align="end">
                         <NavDropdown.Item as="div" className='bg-dark'>
-                            <NavLink to="/profile" className="nav-link">Profile</NavLink>
-                            <NavLink to="/change-password" className="nav-link">Change Password</NavLink>
-                            <NavLink to="/signup" className="nav-link">Sign up</NavLink>
-                            <NavLink to="/login" className="nav-link">Login</NavLink>
-                            <Button className='bg-dark border-0 p-2'>Logout</Button>
+                            {isLoggedIn && <NavLink to="/profile" className="nav-link">Profile</NavLink>}
+                            {isLoggedIn && <NavLink to="/change-password" className="nav-link">Change Password</NavLink>}
+                            {!isLoggedIn && <NavLink to="/signup" className="nav-link">Sign up</NavLink>}
+                            {!isLoggedIn && <NavLink to="/login" className="nav-link">Login</NavLink>}
+                            {isLoggedIn && <Button onClick={logoutHandler} className='bg-dark border-0 p-2'>Logout</Button>}
                         </NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
