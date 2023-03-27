@@ -27,8 +27,9 @@ export const login = createAsyncThunk('auth/login', async({enteredData},{rejectW
     }
 })
 
-// Login API Request
-export const changePassword = createAsyncThunk('auth/changePassword', async({token, enteredData}) => {
+// Change Password API Request
+export const changePassword = createAsyncThunk('auth/changePassword', async({token, enteredData}, {rejectWithValue}) => {
+    try{
         const res = await axios.post(`/api/accounts/change-password/`, enteredData, {
         headers: {
             'Authorization': `Bearer ${token}`
@@ -36,14 +37,20 @@ export const changePassword = createAsyncThunk('auth/changePassword', async({tok
         })
         // console.log(res)
         return res.data
+    }catch(error){
+        console.log(error)
+        return rejectWithValue(error.response.data.errors)
+    }
 })
+
+
 
 const initialAuthState = {
     token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
     isAuthenticated: true ? localStorage.getItem('token') : false,
     loading: false,
     message: '',
-    error: null
+    error: null,
 }
 const authSlice = createSlice({
     name: 'auth',
@@ -91,12 +98,13 @@ const authSlice = createSlice({
             .addCase(changePassword.fulfilled, (state, action) => {
                 state.loading = false
                 state.message = action.payload.message
-                console.log(action.payload.message)
+                // console.log(action.payload.message)
             })
             .addCase(changePassword.rejected, (state, action) => {
                 state.loading = false
                 // console.log(action)
             })
+
     ]
 
 })
