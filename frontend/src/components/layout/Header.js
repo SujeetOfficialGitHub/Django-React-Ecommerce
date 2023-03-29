@@ -19,7 +19,7 @@ const Header = () => {
     <Navbar bg="dark" variant="dark p-3" sticky="top">
         <Container>
             <Navbar.Brand>
-                <NavLink to="/" className="nav-link">Shop</NavLink>
+                <NavLink to="/" className="nav-link fs-3"><b>Shop</b></NavLink>
             </Navbar.Brand>
             <Form className="d-flex">
                 <Form.Control

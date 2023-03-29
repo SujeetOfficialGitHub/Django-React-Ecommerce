@@ -1,0 +1,10 @@
+.carousel-item{
+    padding-right: 1.5rem;
+}
+.carousel-item img{
+    height: 15rem;
+}
+.product-title{
+    height: 3rem;
+    overflow: hidden;
+}

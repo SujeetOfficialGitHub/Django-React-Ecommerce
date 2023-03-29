@@ -6,6 +6,8 @@ import Login from '../pages/login/Login'
 import Signup from '../pages/signup/Signup'
 import ChangePassword from '../pages/change_password/ChangePassword'
 import Profile from '../pages/profile/Profile'
+import NotFound from '../pages/NotFound'
+
 
 const Routers = () => {
   const isLoggedIn = useSelector(state => state.auth.isAuthenticated)
@@ -16,6 +18,7 @@ const Routers = () => {
       <Route path='/login' element={!isLoggedIn ? <Login/> : <Navigate replace to="/" />} />
       <Route path='/change-password' element={isLoggedIn ? <ChangePassword/> : <Navigate replace to="/login" />} />
       <Route path='/profile' element={isLoggedIn ? <Profile/> : <Navigate replace to="/login" />} />
+      <Route path='*' element={<NotFound />} />
     </Routes>
   )
 }

@@ -95,7 +95,7 @@ const Login = () => {
                     onClick={pwdViewHandler}
                     pwdviewicon = {viewPassword ? <AiOutlineEyeInvisible/> : <AiOutlineEye/>}
                 />
-                <Link to="/reset-password">Forgot Password</Link>
+                <Link to="/send-reset-password-email">Forgot Password</Link>
                 <ButtonBox
                     type="submit"
                     className='w-100 btn btn-secondary'
