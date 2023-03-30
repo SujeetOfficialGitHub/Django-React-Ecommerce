@@ -61,10 +61,10 @@ const MultiCarousel = (props) => {
     {props.products.map((product) => (
         <Card key={product.id} className={`${classes.product} mt-3`}>
             <Link to='/product'>
-                <Card.Img variant="top" src={product.images[0]} />
+                <Card.Img variant="top" src={product.thumbnail} />
             </Link>
             <Card.Body>
-                <Card.Text className='p-0 m-0'>{product.brand}</Card.Text>
+                <Card.Text className='p-0 m-0'>{product.brand.brand_title}</Card.Text>
                 <Card.Title className={`${classes['product-title']} 'p-0 m-0'`}>{product.title.length > 30 ? product.title.substr(0,30)+'...' : product.title}</Card.Title>
                 <Rating rating={product.rating} />
                 <Card.Text>

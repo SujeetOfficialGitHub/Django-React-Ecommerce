@@ -9,45 +9,42 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllProducts } from '../../app/features/productSlice'
 
 const Home = () => {
-  const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
-  useEffect(() => {
-    dispatch(fetchAllProducts())
-  },[dispatch])
+    useEffect(() => {
+        dispatch(fetchAllProducts())
+    },[dispatch])
 
-  const products = useSelector(state => state.products.products)
-console.log(products)
-  const fragrances = products.filter((item) => item.category === "fragrances")
-  const homeDecoration = products.filter((item) => item.category === "home-decoration")
-  const groceries = products.filter((item) => item.category === "groceries")
+    //  All Products 
+    const products = useSelector(state => state.products.products)
 
-  return (
+    // Women's category products 
+    const women = products.filter((item) => item.category.category_title === "women")
+    
+    // men's category products 
+    const mens = products.filter((item) => item.category.category_title === "mens")
+
+
+
+    return (
     <div className={classes.home}>
-      <SingleCarousel />
+        <SingleCarousel />
 
-      <section>
-        <div className='d-flex justify-content-between'>
-          <h3 className='p-0 m-0'>Fragrances</h3>
-          <Button variant='secondary'><Link className='text-light'>View all</Link></Button>
-        </div>
-        {products && <MultiCarousel products={fragrances} />}
-      </section>
+        <section>
+            <div className='d-flex justify-content-between'>
+                <h3 className='p-0 m-0'>Women's Collection</h3>
+                <Button variant='secondary'><Link className='text-light'>View all</Link></Button>
+            </div>
+            {products && <MultiCarousel products={women} />}
+        </section>
 
-      <section>
-      <div className='d-flex justify-content-between'>
-          <h3 className='p-0 m-0'>Home Decoration"</h3>
-          <Button variant='secondary'><Link className='text-light'>View all</Link></Button>
-        </div>
-        {products && <MultiCarousel products={homeDecoration} />}
-      </section>
-
-      <section>
-      <div className='d-flex justify-content-between'>
-          <h3 className='p-0 m-0'>Groceries</h3>
-          <Button variant='secondary'><Link className='text-light'>View all</Link></Button>
-        </div>
-        {products && <MultiCarousel products={groceries} />}
-      </section>
+        <section>
+            <div className='d-flex justify-content-between'>
+                <h3 className='p-0 m-0'>Men's Collection</h3>
+                <Button variant='secondary'><Link className='text-light'>View all</Link></Button>
+            </div>
+            {products && <MultiCarousel products={mens} />}
+        </section>
     </div>
   )
 }
