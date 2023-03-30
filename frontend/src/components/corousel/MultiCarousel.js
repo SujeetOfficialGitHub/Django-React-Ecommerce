@@ -60,7 +60,7 @@ const MultiCarousel = (props) => {
   >
     {props.products.map((product) => (
         <Card key={product.id} className={`${classes.product} mt-3`}>
-            <Link to='/product'>
+            <Link to={`/product/${product.slug}`}>
                 <Card.Img variant="top" src={product.thumbnail} />
             </Link>
             <Card.Body>

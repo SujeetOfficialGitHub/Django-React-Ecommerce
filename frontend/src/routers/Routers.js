@@ -7,6 +7,7 @@ import Signup from '../pages/signup/Signup'
 import ChangePassword from '../pages/change_password/ChangePassword'
 import Profile from '../pages/profile/Profile'
 import NotFound from '../pages/NotFound'
+import ProductDetail from '../pages/product_detail/ProductDetail'
 
 
 const Routers = () => {
@@ -14,6 +15,8 @@ const Routers = () => {
   return (
     <Routes>
       <Route path='/' element={<Home/>} />
+      <Route path='/product/:slug' element={ <ProductDetail />} />
+
       <Route path='/signup' element={!isLoggedIn ? <Signup/> : <Navigate replace to="/" />} />
       <Route path='/login' element={!isLoggedIn ? <Login/> : <Navigate replace to="/" />} />
       <Route path='/change-password' element={isLoggedIn ? <ChangePassword/> : <Navigate replace to="/login" />} />
