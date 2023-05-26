@@ -15,6 +15,10 @@ const Header = () => {
         dispatch(authActions.logout())
         navigate('/login')
     }
+
+    const cartHandler = () => {
+        navigate('/cart')
+    }
   return (
     <Navbar bg="dark" variant="dark p-3" sticky="top">
         <Container>
@@ -30,7 +34,7 @@ const Header = () => {
                 />
             </Form>
             <div className='d-flex'>
-                <Button className={classes['header-cart-icon']}><HiShoppingCart/></Button>
+                <Button onClick={cartHandler} className={classes['header-cart-icon']}><HiShoppingCart/></Button>
                 <Nav className={classes['header-user-icon']}>
                     <NavDropdown title={<FaUserAlt/>}  id="collasible-nav-dropdown"  align="end">
                         <NavDropdown.Item as="div" className='bg-dark border border-success rounded'>
@@ -38,6 +42,9 @@ const Header = () => {
                             {isLoggedIn && <NavLink to="/change-password" className="nav-link">Change Password</NavLink>}
                             {!isLoggedIn && <NavLink to="/signup" className="nav-link">Sign up</NavLink>}
                             {!isLoggedIn && <NavLink to="/login" className="nav-link">Login</NavLink>}
+                            <NavLink to="/add-products" className="nav-link">Add Products</NavLink>
+                            <NavLink to="/products-listed" className="nav-link">Products List</NavLink>
+
                             {isLoggedIn && <Button onClick={logoutHandler} className='bg-dark border-0 p-2'>Logout</Button>}
                         </NavDropdown.Item>
                     </NavDropdown>

@@ -1,10 +1,6 @@
 .carousel-item{
-    padding-right: 1.5rem;
+    padding-right: 1rem;
 }
 .carousel-item img{
     height: 15rem;
-}
-.product-title{
-    height: 3rem;
-    overflow: hidden;
 }

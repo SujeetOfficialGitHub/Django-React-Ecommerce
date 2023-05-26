@@ -6,6 +6,7 @@ const ButtonBox = (props) => {
     <Button 
         className={props.className}
         type={props.type || 'button'} 
+        variant={props.variant}
         onClick={props.onClick}>
             {props.children}
     </Button>

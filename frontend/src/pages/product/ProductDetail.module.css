@@ -1,0 +1,18 @@
+.main-image img{
+    width: 80%;
+    height: 22rem;
+}
+.image-list{
+    display: flex;
+}
+.image-list img{
+    width: 5rem;
+    height: 5rem;
+    border: 2px solid rgb(188, 185, 185);
+    margin: .6rem 3px;
+    padding: 2px;
+    cursor: pointer;
+}
+.buttons{
+    margin-right: 2rem;
+}
