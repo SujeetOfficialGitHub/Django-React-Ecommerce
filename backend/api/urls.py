@@ -2,6 +2,7 @@ from django.urls import path, include
 from api.views import ProductView, CategoryView, SellerProductView
 urlpatterns = [
     path('accounts/', include('accounts.urls')),
+    path('seller/', include('seller.urls')),
     path('products/', ProductView.as_view()),
     path('products/<slug>/', ProductView.as_view()),
     path('categories/', CategoryView.as_view()),

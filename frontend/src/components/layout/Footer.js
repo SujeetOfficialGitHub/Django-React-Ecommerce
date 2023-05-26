@@ -23,6 +23,7 @@ const Footer = () => {
                 </Col>
                 <Col lg={3} sm={6} xs={6}>
                     <h5>Links</h5>
+                    <Link to="/seller/signup" className='nav-link'>Become a Seller</Link>
                     <Link to="/home" className='nav-link'>Home</Link>
                     <Link to="/about" className='nav-link'>About</Link>
                     <Link to="/contact" className='nav-link'>Contact us</Link>

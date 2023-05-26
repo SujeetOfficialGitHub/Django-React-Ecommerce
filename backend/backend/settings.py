@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     
     'api.apps.ApiConfig',
     'accounts.apps.AccountsConfig',
+    'seller.apps.SellerConfig',
     
     'corsheaders',
     'rest_framework'

@@ -12,8 +12,12 @@ const SellerProductListed = () => {
   },[dispatch])
 
   const sellerProductsList = useSelector(state => state.sellerProducts.sellerProducts);
+
   return (
-    <Table striped bordered hover>
+    <>
+    <h2 className='p-3 m-3 text-center bg-secondary text-light'>Added Products List</h2>
+    {sellerProductsList.length < 1 && <h4 className='text-center'>Empty Products List</h4>}
+    {sellerProductsList.length>0 && <Table striped bordered hover>
       <thead>
           <tr>
             <th>#</th>
@@ -33,7 +37,8 @@ const SellerProductListed = () => {
             />
           ))}
     </tbody>
-  </Table>
+    </Table>}
+    </>
   )
 }
 

@@ -12,24 +12,34 @@ import Cart from '../pages/cart/Cart'
 import AddProducts from '../pages/addProducts/AddProducts'
 import SellerProductListed from '../pages/seller_product_list/SellerProductListed'
 import UpdateProduct from '../pages/updateProducts/UpdateProducts'
+import SellerSignup from '../pages/seller_signup/SellerSignup'
 
 const Routers = () => {
-  const isLoggedIn = useSelector(state => state.auth.isAuthenticated)
+  const {isAuthenticated, is_seller} = useSelector(state => state.auth)
   return (
     <Routes>
       <Route path='/' element={<Home/>} />
       <Route path='/product/:slug' element={ <ProductDetail />} />
       <Route path='/cart' element={ <Cart />} />
 
-      <Route path='/add-products' element={isLoggedIn ? <AddProducts/> : <Navigate replace to="/login" />} />
-      <Route path='/products-listed' element={isLoggedIn ? <SellerProductListed/> : <Navigate replace to="/login" />} />
-      <Route path='/products-listed/:slug' element={isLoggedIn ? <UpdateProduct/> : <Navigate replace to="/login" />} />
+      {isAuthenticated && is_seller && 
+        <Route path='/add-products' element={<AddProducts/>} />
+      }
+      {isAuthenticated && is_seller && 
+        <Route path='/products-listed' element={<SellerProductListed/>} />
+      }
+      {isAuthenticated && is_seller && 
+        <Route path='/products-listed/:slug' element={<UpdateProduct/>} />
+      }
 
 
-      <Route path='/signup' element={!isLoggedIn ? <Signup/> : <Navigate replace to="/" />} />
-      <Route path='/login' element={!isLoggedIn ? <Login/> : <Navigate replace to="/" />} />
-      <Route path='/change-password' element={isLoggedIn ? <ChangePassword/> : <Navigate replace to="/login" />} />
-      <Route path='/profile' element={isLoggedIn ? <Profile/> : <Navigate replace to="/login" />} />
+
+      <Route path='/seller/signup' element={!isAuthenticated ? <SellerSignup/> : <Navigate replace to="/" />} />
+
+      <Route path='/signup' element={!isAuthenticated ? <Signup/> : <Navigate replace to="/" />} />
+      <Route path='/login' element={!isAuthenticated ? <Login/> : <Navigate replace to="/" />} />
+      <Route path='/change-password' element={isAuthenticated ? <ChangePassword/> : <Navigate replace to="/login" />} />
+      <Route path='/profile' element={isAuthenticated ? <Profile/> : <Navigate replace to="/login" />} />
       
       <Route path='*' element={<NotFound />} />
     </Routes>

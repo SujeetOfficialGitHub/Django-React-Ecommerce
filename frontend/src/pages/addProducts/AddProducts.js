@@ -6,6 +6,7 @@ import ButtonBox from '../../components/ui/ButtonBox'
 import {useDispatch, useSelector} from 'react-redux'
 import { sellerAddProduct } from '../../app/features/sellerProductSlice'
 import { fetchAllCategory } from '../../app/features/categorySlice'
+import { useNavigate } from 'react-router-dom'
 
 // constants for reducer 
 const CATEGORY = "CATEGORY";
@@ -47,6 +48,7 @@ const AddProducts = () => {
     const [productState, productDispatch] = useReducer(productReducer, productInitialState)
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(() => {
         dispatch(fetchAllCategory())
@@ -67,7 +69,15 @@ const AddProducts = () => {
 
         dispatch(sellerAddProduct({enteredData}))
         .unwrap()
-        .then(res => console.log(res))
+        .then(res => {
+            productDispatch({type: CATEGORY, category: ''})
+            productDispatch({type: TITLE, title: ''})
+            productDispatch({type: DESCRIPTION, description: ''})
+            productDispatch({type: MARKET_PRICE, market_price: ''})
+            productDispatch({type: SELLING_PRICE, selling_price: ''})
+            productDispatch({type: IMAGE, image: ''})
+            navigate('/products-listed')
+        })
         .catch(err => console.log(err))
     }
 

@@ -1,6 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
 
+// Seller Signup API Request
+export const sellerSignup = createAsyncThunk('auth/sellerSignup', async({enteredData} ,{rejectWithValue}) => {
+    try{
+        const res = await axios.post(`/api/seller/signup/`, enteredData)
+        return res.data
+    } catch(error){
+        console.log(error)
+        return rejectWithValue(error.response.data.errors)
+
+    }
+})
+
 // Signup API Request
 export const signup = createAsyncThunk('auth/signup', async({enteredData} ,{rejectWithValue}) => {
     try{
@@ -51,6 +63,7 @@ const initialAuthState = {
     loading: false,
     message: '',
     error: null,
+    is_seller: true ? localStorage.getItem('seller') : false,
 }
 const authSlice = createSlice({
     name: 'auth',
@@ -59,10 +72,24 @@ const authSlice = createSlice({
         logout(state){
             state.isAuthenticated = false
             localStorage.removeItem('token')
+            localStorage.removeItem('seller')
         }
     },
     extraReducers: (builder) => [
         builder
+            // Seller Sign up 
+            .addCase(sellerSignup.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(sellerSignup.fulfilled, (state) => {
+                state.loading = false
+            })
+            .addCase(sellerSignup.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.payload
+                // console.log(action)
+            })
+
             // Sign up 
             .addCase(signup.pending, (state) => {
                 state.loading = true
@@ -83,6 +110,8 @@ const authSlice = createSlice({
             .addCase(login.fulfilled, (state, action) => {
                 state.loading = false
                 state.isAuthenticated = true
+                state.is_seller = action.payload.seller
+                localStorage.setItem('seller', action.payload.seller)
                 localStorage.setItem('token', action.payload.token.access)
             })
             .addCase(login.rejected, (state,action) => {

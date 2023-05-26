@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 const Header = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const isLoggedIn = useSelector(state => state.auth.isAuthenticated)
+    const {isAuthenticated, is_seller} = useSelector(state => state.auth)
     const logoutHandler = () => {
         dispatch(authActions.logout())
         navigate('/login')
@@ -38,14 +38,14 @@ const Header = () => {
                 <Nav className={classes['header-user-icon']}>
                     <NavDropdown title={<FaUserAlt/>}  id="collasible-nav-dropdown"  align="end">
                         <NavDropdown.Item as="div" className='bg-dark border border-success rounded'>
-                            {isLoggedIn && <NavLink to="/profile" className="nav-link">Profile</NavLink>}
-                            {isLoggedIn && <NavLink to="/change-password" className="nav-link">Change Password</NavLink>}
-                            {!isLoggedIn && <NavLink to="/signup" className="nav-link">Sign up</NavLink>}
-                            {!isLoggedIn && <NavLink to="/login" className="nav-link">Login</NavLink>}
-                            <NavLink to="/add-products" className="nav-link">Add Products</NavLink>
-                            <NavLink to="/products-listed" className="nav-link">Products List</NavLink>
+                            {isAuthenticated && <NavLink to="/profile" className="nav-link">Profile</NavLink>}
+                            {isAuthenticated && <NavLink to="/change-password" className="nav-link">Change Password</NavLink>}
+                            {!isAuthenticated && <NavLink to="/signup" className="nav-link">Sign up</NavLink>}
+                            {!isAuthenticated && <NavLink to="/login" className="nav-link">Login</NavLink>}
+                            {isAuthenticated && is_seller && <NavLink to="/add-products" className="nav-link">Add Products</NavLink>}
+                            {isAuthenticated && is_seller && <NavLink to="/products-listed" className="nav-link">Products List</NavLink>}
 
-                            {isLoggedIn && <Button onClick={logoutHandler} className='bg-dark border-0 p-2'>Logout</Button>}
+                            {isAuthenticated && <Button onClick={logoutHandler} className='bg-dark border-0 p-2'>Logout</Button>}
                         </NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
