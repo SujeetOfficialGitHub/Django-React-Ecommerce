@@ -11,6 +11,7 @@ const Header = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {isAuthenticated, is_seller} = useSelector(state => state.auth)
+    const cart = useSelector(state => state.cart.cart);
     const logoutHandler = () => {
         dispatch(authActions.logout())
         navigate('/login')
@@ -34,7 +35,7 @@ const Header = () => {
                 />
             </Form>
             <div className='d-flex'>
-                {isAuthenticated && <Button onClick={cartHandler} className={classes['header-cart-icon']}><HiShoppingCart/></Button>}
+                {isAuthenticated && <Button onClick={cartHandler} className={classes['header-cart-icon']}><HiShoppingCart/><span className={classes['cart-item_count']}>{cart && cart.length}</span></Button>}
                 <Nav className={classes['header-user-icon']}>
                     <NavDropdown title={<FaUserAlt/>}  id="collasible-nav-dropdown"  align="end">
                         <NavDropdown.Item as="div" className='bg-dark border border-success rounded'>

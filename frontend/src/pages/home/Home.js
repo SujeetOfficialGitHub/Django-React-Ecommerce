@@ -15,6 +15,7 @@ const Home = () => {
         dispatch(fetchAllProducts())
     },[dispatch])
 
+
     //  All Products 
     const products = useSelector(state => state.products.products)
 

@@ -2,29 +2,39 @@ import React from 'react'
 import {Card, Button} from 'react-bootstrap'
 import Rating from '../ui/Rating'
 import {HiShoppingCart} from 'react-icons/hi'
-import {AiFillHeart, AiOutlineMinusCircle, AiOutlinePlusCircle} from 'react-icons/ai'
+import {AiFillHeart} from 'react-icons/ai'
 import {Link} from 'react-router-dom'
 import ProductPrice from '../ui/ProductPrice'
 import classes from './Product.module.css'
 
 import {useDispatch, useSelector} from 'react-redux'
 import { addToCart } from '../../app/features/cartSlice'
+import QuantityButton from '../ui/QuantityButton'
+
+import { fetchCartData } from '../../app/features/cartSlice'
 
 const Product = ({product}) => {
+  const token = useSelector(state => state.auth.token)
+  const cart = useSelector(state => state.cart.cart);
+  const dispatch = useDispatch()
 
-    const token = useSelector(state => state.auth.token)
-
-
-    const dispatch = useDispatch()
-    const addToCartHandler = (product) => {
-      const item = {
-        id: product.id,
-        market_price: product.market_price,
-        selling_price: product.selling_price,
-        quantity: 1,
-      }
-      dispatch(addToCart({item, token}))
+  
+  
+  const addToCartHandler = async(product) => {
+    const item = {
+      id: product.id,
+      market_price: product.market_price,
+      selling_price: product.selling_price,
+      quantity: 1,
     }
+    await dispatch(addToCart({item, token}))
+    await dispatch(fetchCartData({token}))
+  }
+  
+
+  const in_cart = cart.find(item => item.product === product.title)
+
+
 
   return (
     <Card  className={`${classes.product} mt-3`}>
@@ -41,12 +51,8 @@ const Product = ({product}) => {
                 <div className='d-flex justify-content-between'>
                     <Button variant="success w-25"><AiFillHeart /> </Button>
            
-                    {<Button onClick={() => addToCartHandler(product)} variant="primary w-50">+<HiShoppingCart/></Button>}
-                    {/* <span className='d-flex justify-content-between w-50 bg-primary align-items-center text-light rounded'>
-                        <Button><AiOutlineMinusCircle/></Button>
-                        <span>5</span>
-                        <Button><AiOutlinePlusCircle/></Button>
-                    </span> */}
+                    {!in_cart && <Button onClick={() => addToCartHandler(product)} variant="primary w-50">+<HiShoppingCart/></Button>}
+                    {in_cart &&  <QuantityButton item={in_cart} /> }
                 </div>
             </Card.Body>
 

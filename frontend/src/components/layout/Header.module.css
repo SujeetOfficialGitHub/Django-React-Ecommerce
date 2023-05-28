@@ -2,6 +2,7 @@
     width: 50vw;
 }
 .header-cart-icon{
+    position: relative;
     margin: 0rem 1rem;
     background: rgba(67, 64, 64, 0.521);
 }
@@ -9,4 +10,10 @@
     margin: 0rem 1rem;
     background: rgba(67, 64, 64, 0.521);
 }
-
+.cart-item_count{
+    position: absolute;
+    top: -.5rem; right: -.5rem;
+    background: green;
+    padding: .1rem;
+    border-radius: 50%;
+}
