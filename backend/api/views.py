@@ -53,4 +53,5 @@ class SellerProductView(APIView):
         queryset.delete()
         return Response(serialize.data)
 
+
    

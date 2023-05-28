@@ -34,7 +34,7 @@ const Header = () => {
                 />
             </Form>
             <div className='d-flex'>
-                <Button onClick={cartHandler} className={classes['header-cart-icon']}><HiShoppingCart/></Button>
+                {isAuthenticated && <Button onClick={cartHandler} className={classes['header-cart-icon']}><HiShoppingCart/></Button>}
                 <Nav className={classes['header-user-icon']}>
                     <NavDropdown title={<FaUserAlt/>}  id="collasible-nav-dropdown"  align="end">
                         <NavDropdown.Item as="div" className='bg-dark border border-success rounded'>

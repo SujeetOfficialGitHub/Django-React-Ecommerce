@@ -16,7 +16,7 @@ def upload_path(instance, filename):
 
 class Product(models.Model):
     vendor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=250, blank=True, null=True)
+    title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=100,unique=True, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
     market_price = models.PositiveIntegerField(blank=True, null=True)
@@ -32,6 +32,6 @@ class Product(models.Model):
             self.slug = slugify(value, allow_unicode=True) + str(uuid.uuid4())
         super().save(*args, **kwargs)
     
-    # def __str__(self):
-    #     return self.title
+    def __str__(self):
+        return self.title
     

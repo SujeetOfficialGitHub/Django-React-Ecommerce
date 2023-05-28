@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import ContainerBox from '../../components/ui/ContainerBox'
-import { Table } from 'react-bootstrap'
+import { Table, Image } from 'react-bootstrap'
 import ButtonBox from '../../components/ui/ButtonBox'
 import {FaTrash} from 'react-icons/fa'
-import {AiOutlinePlusCircle, AiOutlineMinusCircle} from 'react-icons/ai'
 import {useDispatch, useSelector} from 'react-redux'
-import { fetchCartData } from '../../app/features/cartSlice'
-
+import { deleteCartData, fetchCartData } from '../../app/features/cartSlice'
+import ProductPrice from '../../components/ui/ProductPrice'
+import QuantityButton from '../../components/ui/QuantityButton'
 const Cart = () => {
   const dispatch = useDispatch()
   const token = useSelector(state => state.auth.token)
@@ -14,9 +14,15 @@ const Cart = () => {
     dispatch(fetchCartData({token}))
   },[dispatch, token])
 
-  const cart = useSelector(state => state.cart.cart)
+  const {cart, loading} = useSelector(state => state.cart)
+
   return (
-    <ContainerBox>
+    <>
+      <ContainerBox>
+        <h2 className='text-center p-2'>My Cart</h2><hr />
+        {loading && <h2 className='p-5 m-5 text-center'>Loading...</h2>}
+        {!loading && cart.length<1 && <h4 className='text-center p-4 m-4'>Your Cart is Empty</h4>}
+        {!loading && cart.length>0 &&
         <Table striped bordered hover>
             <thead>
                 <tr>
@@ -30,27 +36,25 @@ const Cart = () => {
                 </tr>
             </thead>
             <tbody>
-                {cart.length > 0 && cart.map((item) => (
-                  <tr key={item.product.id}>
-                    <td>1</td>
-                    <td>No Image</td>
-                    <td>{item.product.title}</td>
+                {cart.map((item, index) => (
+                  <tr key={item.id}>
+                    <td>{index+1}</td>
+                    <td><Image style={{width: '4rem', height: '4rem'}} src={item.image} /></td>
+                    <td>{item.product}</td>
                     <td>
-                      <span className='d-flex justify-content-between w-50 bg-success align-items-center text-light rounded'>
-                          <ButtonBox className="btn btn-success btn-sm"><AiOutlineMinusCircle/></ButtonBox>
-                          <span>{item.quantity}</span>
-                          <ButtonBox className="btn btn-success btn-sm"><AiOutlinePlusCircle/></ButtonBox>
-                      </span>
+                       <QuantityButton item={item}/>
                     </td>
-                    <td>{item.selling_price * item.quantity}</td>
+                    <td><ProductPrice price={item.market_price} selling_price={item.selling_price}/></td>
                     <td>
-                      <ButtonBox className="btn btn-danger btn-sm"><FaTrash/></ButtonBox>
+                      <ButtonBox onClick={() => dispatch(deleteCartData({token, id: item.id}))} className="btn btn-danger btn-sm"><FaTrash/></ButtonBox>
                     </td>
                   </tr>
                 ))}
             </tbody>
         </Table>
-    </ContainerBox>
+      }
+      </ContainerBox>
+    </>
   )
 }
 

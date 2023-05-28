@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'accounts.apps.AccountsConfig',
     'seller.apps.SellerConfig',
+    'cart.apps.CartConfig',
     
     'corsheaders',
     'rest_framework'

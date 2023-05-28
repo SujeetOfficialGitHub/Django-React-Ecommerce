@@ -8,9 +8,9 @@ export const addToCart = createAsyncThunk('cart/addToCart', async({item, token},
                 'Authorization': `Bearer ${token}`
             },
         })
+        return res.data
     }catch(error){
-        console.log(error)
-        return rejectWithValue(error)
+        return rejectWithValue(error.response.data.errors)
     }
 })
 
@@ -22,10 +22,38 @@ export const fetchCartData = createAsyncThunk('cart/fetchCartData', async({token
                 'Authorization': `Bearer ${token}`
             },
         })
-        return res.data.products
+        return res.data
     }catch(error){
-        console.log(error)
-        return rejectWithValue(error)
+        return rejectWithValue(error.response.data.errors)
+    }
+})
+
+export const deleteCartData = createAsyncThunk('cart/deleteCartData', async({token, id},{rejectWithValue}) => {
+    try{
+        const res = await axios.delete(`/api/cart/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        })
+        return {...res.data.cart, id: id}
+    }catch(error){
+        return rejectWithValue(error.response.data.errors)
+    }
+})
+
+export const updateCartData = createAsyncThunk('cart/updateCartData', async({token, id, quantity},{rejectWithValue}) => {
+    try{
+
+        const res = await axios.put(`/api/cart/${id}/`,{ quantity}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        })
+        return {...res.data.cart, id: id}
+    }catch(error){
+        return rejectWithValue(error.response.data.errors)
     }
 })
 
@@ -33,24 +61,66 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState: {
         cart: [],
-        totalAmout: 0
+        totalAmout: 0,
+        loading: false
     },
     extraReducers: (builder) => {
         builder
+            // Add to Cart 
             .addCase(addToCart.fulfilled, (state, action) => {
-                console.log(action)
+                // console.log(action.payload)
             })
             .addCase(addToCart.rejected, (state, action) => {
                 console.log(action)
             })
 
+            // Fetch all cart data 
+            .addCase(fetchCartData.pending, (state) => {
+                state.loading = true
+            })
             .addCase(fetchCartData.fulfilled, (state, action) => {
-                state.cart = action.payload
-                console.log(action.payload)
+                state.loading = false
+                state.cart =  action.payload.length>0 ? action.payload[0].cart_items : action.payload
+                state.totalAmout = action.payload[0].total_amt;
             })
             .addCase(fetchCartData.rejected, (state, action) => {
+                state.loading = false
                 console.log(action)
             })
+           
+            // Delete cart data 
+            .addCase(deleteCartData.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(deleteCartData.fulfilled, (state, action) => {
+                state.loading = false
+                state.cart = state.cart.filter(item => item.id !== action.payload.id)
+            })
+            .addCase(deleteCartData.rejected, (state, action) => {
+                state.loading = false
+
+            })
+          
+            // update cart data 
+            .addCase(updateCartData.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(updateCartData.fulfilled, (state, action) => {
+                state.loading = false
+                const index = state.cart.findIndex((item) => item.id === action.payload.id);
+                if (state.cart[index].quantity === 1 && action.payload.quantity === 0){
+                    state.cart = state.cart.filter(item => item.id !== action.payload.id)
+                }else{
+                    state.cart[index] = action.payload
+                }
+            })
+            .addCase(updateCartData.rejected, (state, action) => {
+                state.loading = false
+                console.log(action)
+
+            })
+           
+
     }
     
 })
