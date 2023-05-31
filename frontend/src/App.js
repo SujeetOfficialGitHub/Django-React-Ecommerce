@@ -6,7 +6,9 @@ import Routers from './routers/Routers';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCartData } from './app/features/cartSlice';
 
+
 function App() {
+
   const token = useSelector(state => state.auth.token)
   const dispatch = useDispatch()
   useEffect(() => {
@@ -14,6 +16,7 @@ function App() {
   }, [dispatch, token])
   return (
     <>
+   
     <Header />
     <main>
       <Routers />

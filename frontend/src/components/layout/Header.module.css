@@ -13,7 +13,8 @@
 .cart-item_count{
     position: absolute;
     top: -.5rem; right: -.5rem;
-    background: green;
-    padding: .1rem;
-    border-radius: 50%;
+    background: white;
+    padding: 0rem .1rem;
+    color: black;
+    border-radius: 30% 30%;
 }

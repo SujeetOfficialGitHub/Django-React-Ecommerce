@@ -5,8 +5,8 @@ const ProductPrice = ({price, selling_price}) => {
  
   return (
     <>
-        <b>${selling_price} </b>
-        <small><del>${price} </del></small>
+        <b>Rs. {selling_price} </b>
+        <small><del>Rs. {price} </del></small>
         <b className='text-success'> {discount}%off</b>
     </>
   )

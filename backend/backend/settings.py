@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'seller.apps.SellerConfig',
     'cart.apps.CartConfig',
+    'payment.apps.PaymentConfig',
     
     'corsheaders',
     'rest_framework'

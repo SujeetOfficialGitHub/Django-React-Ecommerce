@@ -51,7 +51,7 @@ export const updateCartData = createAsyncThunk('cart/updateCartData', async({tok
                 'Authorization': `Bearer ${token}`
             },
         })
-        return {...res.data.cart, id: id}
+        return {...res.data.cart, id: id, updateNumber: quantity}
     }catch(error){
         return rejectWithValue(error.response.data.errors)
     }
@@ -61,7 +61,7 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState: {
         cart: [],
-        totalAmout: 0,
+        totalAmount: 0,
         loading: false
     },
     extraReducers: (builder) => {
@@ -81,7 +81,7 @@ const cartSlice = createSlice({
             .addCase(fetchCartData.fulfilled, (state, action) => {
                 state.loading = false
                 state.cart =  action.payload.length>0 ? action.payload[0].cart_items : action.payload
-                state.totalAmout = action.payload[0].total_amt;
+                state.totalAmount = action.payload.length>0 ? action.payload[0].total_amt : 0;
             })
             .addCase(fetchCartData.rejected, (state, action) => {
                 state.loading = false
@@ -94,6 +94,7 @@ const cartSlice = createSlice({
             })
             .addCase(deleteCartData.fulfilled, (state, action) => {
                 state.loading = false
+                state.totalAmount = state.totalAmount - action.payload.selling_price * action.payload.quantity
                 state.cart = state.cart.filter(item => item.id !== action.payload.id)
             })
             .addCase(deleteCartData.rejected, (state, action) => {
@@ -107,6 +108,7 @@ const cartSlice = createSlice({
             })
             .addCase(updateCartData.fulfilled, (state, action) => {
                 state.loading = false
+                state.totalAmount = state.totalAmount + (action.payload.selling_price * action.payload.updateNumber)
                 const index = state.cart.findIndex((item) => item.id === action.payload.id);
                 if (state.cart[index].quantity === 1 && action.payload.quantity === 0){
                     state.cart = state.cart.filter(item => item.id !== action.payload.id)

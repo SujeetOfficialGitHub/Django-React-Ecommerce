@@ -24,27 +24,29 @@ class CartView(APIView):
         serialize.is_valid(raise_exception=True)
         serialize.save(cart=cart, product=product)
         
-        total_amount = 0
-        cart__items = CartItems.objects.filter(cart=cart)
-        for items in cart__items:
-            total_amount += items.selling_price
-        cart.total_amt = total_amount
+        selling_price = serialize.validated_data['selling_price']
+        
+        cart.total_amt += selling_price
         cart.save()
         return Response({'cart': serialize.data})
     
 
     def put(self, request, pk, format=None):
+        cart = Cart.objects.get(user=request.user)
         cart_item = get_object_or_404(CartItems, id=pk)
         quantity = request.data['quantity']
-        print(quantity)
         if quantity == -1 and cart_item.quantity == 1:
             cart_item.quantity = 0
             serialize = CartItemsSerialzer(cart_item)
+            cart.total_amt = cart.total_amt + (quantity*cart_item.selling_price)
+            cart.save()
             cart_item.delete()
             return Response({'cart': serialize.data})
         
         cart_item.quantity += quantity
         cart_item.save()
+        cart.total_amt = cart.total_amt + (quantity*cart_item.selling_price)
+        cart.save()
         queryset = CartItems.objects.get(id=pk)
         serialize = CartItemsSerialzer(queryset)
         return Response({'cart': serialize.data})
@@ -52,5 +54,8 @@ class CartView(APIView):
     def delete(self, request, pk, format=None):
         queryset = CartItems.objects.get(id=pk)
         serialize = CartItemsSerialzer(queryset)
+        cart = Cart.objects.get(user=request.user)
+        cart.total_amt = cart.total_amt - queryset.quantity * queryset.selling_price
+        cart.save()
         queryset.delete()
         return Response({'cart': serialize.data})

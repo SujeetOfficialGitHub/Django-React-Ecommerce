@@ -4,7 +4,7 @@ from api.models import Product
 # Create your models here.
 class Cart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    total_amt = models.PositiveIntegerField(blank=True, null=True)
+    total_amt = models.PositiveIntegerField(default=0, blank=True, null=True)
     
     def __str__(self):
         return self.user.email

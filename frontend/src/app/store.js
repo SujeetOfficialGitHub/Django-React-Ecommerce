@@ -11,7 +11,7 @@ const store = configureStore({
         products: productSlice,
         category: categorySlice,
         cart: cartSlice,
-        sellerProducts: sellerProductSlice
+        sellerProducts: sellerProductSlice,
     }
 })
 

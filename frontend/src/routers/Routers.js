@@ -13,14 +13,16 @@ import AddProducts from '../pages/addProducts/AddProducts'
 import SellerProductListed from '../pages/seller_product_list/SellerProductListed'
 import UpdateProduct from '../pages/updateProducts/UpdateProducts'
 import SellerSignup from '../pages/seller_signup/SellerSignup'
+import OrderedProduct from '../pages/ordered_product/OrderedProduct'
 
 const Routers = () => {
   const {isAuthenticated, is_seller} = useSelector(state => state.auth)
   return (
     <Routes>
-      <Route path='/' element={<Home/>} />
+      <Route path='/' element={isAuthenticated ? <Home /> : <Login/>} />
       <Route path='/product/:slug' element={ <ProductDetail />} />
       <Route path='/cart' element={ isAuthenticated ? <Cart /> : <Login/>} />
+      <Route path='/orders' element={ isAuthenticated ? <OrderedProduct /> : <Login/>} />
       
       {isAuthenticated && is_seller && 
         <Route path='/add-products' element={<AddProducts/>} />

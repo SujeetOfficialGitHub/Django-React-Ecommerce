@@ -45,6 +45,7 @@ const Header = () => {
                             {!isAuthenticated && <NavLink to="/login" className="nav-link">Login</NavLink>}
                             {isAuthenticated && is_seller && <NavLink to="/add-products" className="nav-link">Add Products</NavLink>}
                             {isAuthenticated && is_seller && <NavLink to="/products-listed" className="nav-link">Products List</NavLink>}
+                            {isAuthenticated && <NavLink to="/orders" className="nav-link">Orders</NavLink>}
 
                             {isAuthenticated && <Button onClick={logoutHandler} className='bg-dark border-0 p-2'>Logout</Button>}
                         </NavDropdown.Item>
