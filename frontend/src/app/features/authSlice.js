@@ -59,6 +59,7 @@ export const changePassword = createAsyncThunk('auth/changePassword', async({tok
 
 const initialAuthState = {
     token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
+    email: localStorage.getItem('email') ? localStorage.getItem('email') : '',
     isAuthenticated: true ? localStorage.getItem('token') : false,
     loading: false,
     message: '',
@@ -73,6 +74,7 @@ const authSlice = createSlice({
             state.isAuthenticated = false
             localStorage.removeItem('token')
             localStorage.removeItem('seller')
+            localStorage.removeItem('email')
         }
     },
     extraReducers: (builder) => [
@@ -111,9 +113,11 @@ const authSlice = createSlice({
                 state.loading = false
                 state.isAuthenticated = true
                 state.is_seller = action.payload.seller
+                state.email = action.payload.email
                 state.token = action.payload.token.access;
                 localStorage.setItem('seller', action.payload.seller)
                 localStorage.setItem('token', action.payload.token.access)
+                localStorage.setItem('email', action.payload.email)
             })
             .addCase(login.rejected, (state,action) => {
                 state.loading = false

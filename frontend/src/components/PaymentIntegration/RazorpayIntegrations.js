@@ -1,10 +1,15 @@
 import React from "react";
 import axios from "axios";
-
-
-
 import ButtonBox from '../ui/ButtonBox'
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCartData } from "../../app/features/cartSlice";
+import {useNavigate} from 'react-router-dom'
+
 const RazorpayIntegrations = ({cart, totalAmount}) => {
+    const email = useSelector(state => state.auth.email)
+    const token = useSelector(state => state.auth.token)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const handlePaymentSuccess = async (response) => {
         try {
           let bodyData = new FormData();
@@ -24,6 +29,9 @@ const RazorpayIntegrations = ({cart, totalAmount}) => {
           })
             .then((res) => {
               console.log("Everything is OK!");
+              dispatch(fetchCartData({token}))
+              navigate('/orders')
+
             })
             .catch((err) => {
               console.log(err);
@@ -70,7 +78,7 @@ const RazorpayIntegrations = ({cart, totalAmount}) => {
       key_secret: process.env.REACT_APP_SECRET_KEY,
       amount: data.data.payment.amount,
       currency: "INR",
-      name: "Org. Name",
+      name: email,
       description: "Test teansaction",
       image: "", // add image url
       order_id: data.data.payment.id,
@@ -81,7 +89,7 @@ const RazorpayIntegrations = ({cart, totalAmount}) => {
       },
       prefill: {
         name: "User's name",
-        email: "User's email",
+        email: email,
         contact: "User's phone",
       },
       notes: {

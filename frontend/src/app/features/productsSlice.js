@@ -34,12 +34,34 @@ const productSlice = createSlice({
     initialState: {
         products: [],
         loading: false,
-        orderedProducts: []
+        orderedProducts: [],
+        sortProducts: [],
+        price: '',
+        category: []
+    },
+    reducers: {
+        // Insert/remove selected/unselected category into category state
+        setCategoryFilter: (state, action) => {
+            const {title, checked} = action.payload;
+            if (checked){
+                state.category.push(title)
+            }else{
+                state.category = state.category.filter(item => item !== title)
+            } 
+        },
+        // Sorting products low to high and high to low 
+        setPriceFilter: (state, action) => {
+            if (action.payload === 'highToLow'){
+                state.price = action.payload
+                state.sortProducts =  [...state.sortProducts].sort((a,b) => b.selling_price - a.selling_price);
+            }else if (action.payload === 'lowToHigh'){
+                state.price = action.payload
+                state.sortProducts = [...state.sortProducts].sort((a,b) => a.selling_price - b.selling_price);
+            }
+        }
     },
     extraReducers: (builder) => {
         builder
-        
-
             // Fetch all products 
             .addCase(fetchAllProducts.pending, (state) => {
                 state.loading = true
@@ -47,6 +69,7 @@ const productSlice = createSlice({
             .addCase(fetchAllProducts.fulfilled, (state, action) => {
                 state.loading = false
                 state.products = action.payload
+                state.sortProducts = action.payload
             })
             .addCase(fetchAllProducts.rejected, (state, action) => {
                 state.loading = false
@@ -82,5 +105,5 @@ const productSlice = createSlice({
            
     }
 })
-
+export const {setCategoryFilter, setPriceFilter} = productSlice.actions;
 export default productSlice.reducer

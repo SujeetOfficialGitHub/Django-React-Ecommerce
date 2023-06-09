@@ -44,9 +44,11 @@ class LoginView(APIView):
         email = serializer.data.get('email')
         password = serializer.data.get('password')
         user = authenticate(email=email, password=password)
+
         if user is not None:
             token = get_tokens_for_user(user)
-            return Response({'token': token,'seller': user.is_staff, 'message': "Login successfully"}, status=status.HTTP_201_CREATED)
+            data = {'token': token,'seller': user.is_staff, 'email': user.email, 'message': "Login successfully"}
+            return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response({'errors': {'non_field_errors': ['Email or password is not valid']}}, status=status.HTTP_400_BAD_REQUEST)
 

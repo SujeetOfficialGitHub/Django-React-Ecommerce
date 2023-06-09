@@ -24,7 +24,7 @@ const Header = () => {
     <Navbar bg="dark" variant="dark p-3" sticky="top">
         <Container>
             <Navbar.Brand>
-                <NavLink to="/" className="nav-link fs-3"><b>Shop</b></NavLink>
+                <NavLink to="/" className="nav-link fs-3"><b>Shoppee</b></NavLink>
             </Navbar.Brand>
             <Form className="d-flex">
                 <Form.Control
@@ -39,6 +39,8 @@ const Header = () => {
                 <Nav className={classes['header-user-icon']}>
                     <NavDropdown title={<FaUserAlt/>}  id="collasible-nav-dropdown"  align="end">
                         <NavDropdown.Item as="div" className='bg-dark border border-success rounded'>
+                            {isAuthenticated && <NavLink to="/" className="nav-link">Home</NavLink>}
+                            {isAuthenticated && <NavLink to="/shop" className="nav-link">Shop</NavLink>}
                             {isAuthenticated && <NavLink to="/profile" className="nav-link">Profile</NavLink>}
                             {isAuthenticated && <NavLink to="/change-password" className="nav-link">Change Password</NavLink>}
                             {!isAuthenticated && <NavLink to="/signup" className="nav-link">Sign up</NavLink>}

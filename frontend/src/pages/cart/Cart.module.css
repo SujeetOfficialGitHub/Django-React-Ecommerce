@@ -1,0 +1,16 @@
+
+.cart-total{
+    font-size: 1.3rem;
+    background: rgb(235, 231, 231, .5);
+    padding: 1rem;
+    max-width: 30rem;
+
+}
+@media (max-width: 998px){
+    .cart-total{
+        display: grid;
+        margin-left: calc(100vw - 32rem);
+        padding: 1rem;
+
+    }
+}

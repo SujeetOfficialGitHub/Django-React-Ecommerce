@@ -35,7 +35,7 @@ const Home = () => {
         <section>
             <div className='d-flex justify-content-between'>
                 <h3 className='p-0 m-0'>Women's Collection</h3>
-                <Button variant='secondary'><Link className='text-light'>View all</Link></Button>
+                <Button variant='secondary'><Link to="/shop" className='text-light'>View all</Link></Button>
             </div>
             {women && <MultiCarousel products={women} />}
         </section>
@@ -43,7 +43,7 @@ const Home = () => {
         <section>
             <div className='d-flex justify-content-between'>
                 <h3 className='p-0 m-0'>Men's Collection</h3>
-                <Button variant='secondary'><Link className='text-light'>View all</Link></Button>
+                <Button variant='secondary'><Link to="/shop" className='text-light'>View all</Link></Button>
             </div>
             {mens && <MultiCarousel products={mens} />}
         </section>

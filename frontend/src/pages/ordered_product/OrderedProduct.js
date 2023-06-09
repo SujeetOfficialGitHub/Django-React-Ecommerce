@@ -14,14 +14,13 @@ const OrderedProduct = () => {
     
       const {orderedProducts, loading} = useSelector(state => state.products)
 
-      console.log(orderedProducts)
     
       return (
         <>
           <ContainerBox>
             <h2 className='text-center p-2'>My Orders</h2><hr />
             {loading && <h2 className='p-5 m-5 text-center'>Loading...</h2>}
-            {!loading && orderedProducts.length<1 && <h4 className='text-center p-4 m-4'>Your Cart is Empty</h4>}
+            {!loading && orderedProducts.length<1 && <h4 className='text-center p-4 m-4'>Your haven't ordered anything, Please shop now</h4>}
             {!loading && orderedProducts.length>0 &&
             <Table striped bordered hover>
                 <thead>

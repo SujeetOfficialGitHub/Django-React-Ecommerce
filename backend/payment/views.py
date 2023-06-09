@@ -9,7 +9,7 @@ import os
 import razorpay
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from cart.models import Cart, CartItems
 
 
 @permission_classes([IsAuthenticated])
@@ -43,6 +43,7 @@ def start_payment(request):
     order_items = None
     for items in cart:
         order_items = OrderItems.objects.create(
+            user = request.user,
             order=order,
             payment_id= payment['id'],
             title= items['product'],
@@ -102,14 +103,20 @@ def handle_payment_success(request):
     # checking if the transaction is valid or not by passing above data dictionary in 
     # razorpay client if it is "valid" then check will return None
     check = client.utility.verify_payment_signature(data)
-    print(check)
+
     if check is None:
         print("Redirect to error url or error page")
         return Response({'error': 'Something went wrong'})
 
-    # if payment is successful that means check is None then we will turn isPaid=True
     order.paid_status = True
     order.save()
+    
+    cart = Cart.objects.get(user=request.user)
+    cart.total_amt = 0
+    cart.save()
+    cart_items = CartItems.objects.filter(cart=cart)
+    cart.delete()
+    
 
     res_data = {
         'message': 'payment successfully received!'

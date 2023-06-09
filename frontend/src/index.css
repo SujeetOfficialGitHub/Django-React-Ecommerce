@@ -44,3 +44,14 @@ section{
   text-align: center;
   text-transform: capitalize;
 }
+.loading{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: transparent;
+  background: rgba(237, 236, 236, 0.788);
+  position: fixed;
+  top: 0rem; left: 0rem; right: 0;
+  z-index: 99;
+}
