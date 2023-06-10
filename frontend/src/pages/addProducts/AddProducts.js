@@ -7,9 +7,11 @@ import {useDispatch, useSelector} from 'react-redux'
 import { sellerAddProduct } from '../../app/features/sellerProductSlice'
 import { fetchAllCategory } from '../../app/features/categorySlice'
 import { useNavigate } from 'react-router-dom'
+import { fetchAllColor } from '../../app/features/colorSlice'
 
 // constants for reducer 
 const CATEGORY = "CATEGORY";
+const COLOR = "COLOR";
 const TITLE = 'TITLE';
 const MARKET_PRICE = 'MARKET_PRICE';
 const SELLING_PRICE = 'SELLING_PRICE';
@@ -18,6 +20,7 @@ const IMAGE = 'IMAGE';
 
 const productInitialState = {
     category: '',
+    color: '',
     title: '',
     market_price: 0,
     selling_price: 0,
@@ -35,6 +38,8 @@ const productReducer = (state, action) => {
             return {...state, market_price: action.market_price}
         case SELLING_PRICE:
             return {...state, selling_price: action.selling_price}
+        case COLOR:
+            return {...state, color: action.color}
         case DESCRIPTION:
             return {...state, description: action.description}
         case IMAGE:
@@ -52,10 +57,11 @@ const AddProducts = () => {
 
     useEffect(() => {
         dispatch(fetchAllCategory())
+        dispatch(fetchAllColor())
     },[dispatch])
 
     const categoryList = useSelector(state => state.category.categoryList)
-    
+    const colorList = useSelector(state => state.color.colorsList)
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -64,6 +70,7 @@ const AddProducts = () => {
         enteredData.append('title', productState.title)
         enteredData.append('description', productState.description)
         enteredData.append('market_price', productState.market_price)
+        enteredData.append('color', productState.color)
         enteredData.append('selling_price', productState.selling_price)
         enteredData.append('image', productState.image)
 
@@ -75,6 +82,7 @@ const AddProducts = () => {
             productDispatch({type: DESCRIPTION, description: ''})
             productDispatch({type: MARKET_PRICE, market_price: ''})
             productDispatch({type: SELLING_PRICE, selling_price: ''})
+            productDispatch({type: COLOR, color: ''})
             productDispatch({type: IMAGE, image: ''})
             navigate('/products-listed')
         })
@@ -85,7 +93,7 @@ const AddProducts = () => {
     <ContainerBox className='mt-5 mb-5'>
         <h3 className='text-center'>Add Product</h3>
         <Form onSubmit={submitHandler}>
-            {/* show category form database */}
+            {/* show all category form database */}
             {categoryList.length>0 &&
                 <Form.Select value={productState.category} onChange={(e) => productDispatch({type: CATEGORY, category: e.target.value})} aria-label="category">
                     <option>Select Category</option>
@@ -94,7 +102,17 @@ const AddProducts = () => {
                     ))}
                 </Form.Select>
             }
-
+            <br />
+            {/* show all colors form database */}
+            {colorList.length>0 &&
+                <Form.Select value={productState.color} onChange={(e) => productDispatch({type: COLOR, color: e.target.value})} aria-label="color">
+                    <option>Select Color</option>
+                    {colorList.map(item => (
+                        <option key={item.id} value={item.title}>{item.title}</option>
+                    ))}
+                </Form.Select>
+            }
+            <br />
             <InputBox 
                 label="Title"
                 type="text"

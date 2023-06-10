@@ -1,5 +1,5 @@
 from django.urls import path, include
-from api.views import ProductView, CategoryView, SellerProductView
+from api.views import ProductView, CategoryView, SellerProductView, ColorView
 from payment.views import ordered_product_view
 urlpatterns = [
     path('accounts/', include('accounts.urls')),
@@ -9,6 +9,7 @@ urlpatterns = [
     path('products/', ProductView.as_view()),
     path('products/<slug>/', ProductView.as_view()),
     path('categories/', CategoryView.as_view()),
+    path('colors/', ColorView.as_view()),
     
     path('seller-products-listing/', SellerProductView.as_view()),
     path('seller-products-listing/<slug>', SellerProductView.as_view()),

@@ -10,6 +10,12 @@ class Category(models.Model):
     def __str__(self):
         return self.title
     
+class Color(models.Model):
+    title = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.title
+    
     
 def upload_path(instance, filename):
     return '/'.join(['products', str(instance.title), filename])
@@ -21,6 +27,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
     market_price = models.PositiveIntegerField(blank=True, null=True)
     selling_price = models.PositiveIntegerField(blank=True, null=True)
+    color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True)
     image = models.ImageField(upload_to=upload_path, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -37,7 +37,8 @@ const productSlice = createSlice({
         orderedProducts: [],
         sortProducts: [],
         price: '',
-        category: []
+        category: [],
+        color: []
     },
     reducers: {
         // Insert/remove selected/unselected category into category state
@@ -49,9 +50,22 @@ const productSlice = createSlice({
                 state.category = state.category.filter(item => item !== title)
             } 
         },
+        // Insert/remove selected/unselected color into color state
+        setcolorFilter: (state, action) => {
+            const {title, checked} = action.payload;
+            if (checked){
+                state.color.push(title)
+            }else{
+                state.color = state.color.filter(item => item !== title)
+            } 
+        },
         // Sorting products low to high and high to low 
         setPriceFilter: (state, action) => {
-            if (action.payload === 'highToLow'){
+            // console.log(action.payload)
+            if (action.payload === 'relevance'){
+                state.price = action.payload
+                state.sortProducts =  [...state.products];
+            }else if (action.payload === 'highToLow'){
                 state.price = action.payload
                 state.sortProducts =  [...state.sortProducts].sort((a,b) => b.selling_price - a.selling_price);
             }else if (action.payload === 'lowToHigh'){
@@ -105,5 +119,5 @@ const productSlice = createSlice({
            
     }
 })
-export const {setCategoryFilter, setPriceFilter} = productSlice.actions;
+export const {setCategoryFilter, setPriceFilter, setcolorFilter} = productSlice.actions;
 export default productSlice.reducer

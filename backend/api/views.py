@@ -4,13 +4,19 @@ from rest_framework import status
 
 from django.shortcuts import get_object_or_404
 
-from .models import Category, Product
-from api.serializers import CategorySerializer, ProductSerializer
+from .models import Category, Product, Color
+from api.serializers import CategorySerializer, ProductSerializer, ColorSerializer
 
 class CategoryView(APIView):
     def get(self, request, format=None):
         queryset = Category.objects.all()
         serialize = CategorySerializer(queryset, many=True)
+        return Response(serialize.data)
+
+class ColorView(APIView):
+    def get(self, request, format=None):
+        queryset = Color.objects.all()
+        serialize = ColorSerializer(queryset, many=True)
         return Response(serialize.data)
     
 class ProductView(APIView):
@@ -34,13 +40,13 @@ class SellerProductView(APIView):
     
     def post(self, request, format=None):
         category = Category.objects.get(title=request.data['category'])
+        color = Color.objects.get(title=request.data['color'])
         serialize = ProductSerializer(data=request.data)
         serialize.is_valid(raise_exception=True)
-        serialize.save(vendor=request.user, category=category)
+        serialize.save(vendor=request.user, category=category, color=color)
         return Response(serialize.data)
     
     def put(self, request, slug, format=None):
-        print(request.data['image'])
         queryset = Product.objects.get(slug=slug)
         serialize = ProductSerializer(queryset, data=request.data)
         serialize.is_valid(raise_exception=True)

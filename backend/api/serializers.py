@@ -8,15 +8,20 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'title']
 
+class ColorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'title']
+
 class ProductSerializer(serializers.ModelSerializer):
     vendor = serializers.StringRelatedField()
     category = serializers.StringRelatedField()
+    color = serializers.StringRelatedField()
     class Meta:
         model = Product
         fields = ['id', 'vendor', 'title', 'slug', 
                   'category', 'market_price', 'selling_price', 
-                  'image', 'description'
+                  'color', 'image', 'description'
                   ]
     
-    # def validate(self, attrs):
-    #     mar
+
