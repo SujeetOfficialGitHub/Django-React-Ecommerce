@@ -92,7 +92,7 @@ const sellerProductSlice = createSlice({
             })
             .addCase(sellerProductUpdate.rejected, (state, action) => {
                 state.loading = false
-                console.log(action)
+                // console.log(action)
             })
 
                 
@@ -108,7 +108,7 @@ const sellerProductSlice = createSlice({
             })
             .addCase(sellerProductDelete.rejected, (state, action) => {
                 state.loading = false
-                console.log(action)
+                // console.log(action)
             })
 
 
@@ -123,7 +123,7 @@ const sellerProductSlice = createSlice({
             })
             .addCase(sellerAddProduct.rejected, (state, action) => {
                 state.loading = false
-                console.log(action)
+                // console.log(action)
             })
     
     }

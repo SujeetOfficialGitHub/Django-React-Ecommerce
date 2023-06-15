@@ -71,7 +71,7 @@ const cartSlice = createSlice({
                 console.log('Item added')
             })
             .addCase(addToCart.rejected, (state, action) => {
-                console.log(action)
+                // console.log(action)
             })
 
             // Fetch all cart data 
@@ -85,7 +85,7 @@ const cartSlice = createSlice({
             })
             .addCase(fetchCartData.rejected, (state, action) => {
                 state.loading = false
-                console.log(action)
+                // console.log(action)
             })
            
             // Delete cart data 
@@ -118,7 +118,7 @@ const cartSlice = createSlice({
             })
             .addCase(updateCartData.rejected, (state, action) => {
                 state.loading = false
-                console.log(action)
+                // console.log(action)
 
             })
            
