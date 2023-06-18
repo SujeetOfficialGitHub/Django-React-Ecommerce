@@ -11,20 +11,21 @@ const MultiCarousel = (props) => {
 
   const responsive = {
     desktop: {
-      breakpoint: { max: 3000, min: 1024 },
+      breakpoint: { max: 3000, min: 1200 },
       items: 5,
-      slidesToSlide: 5 // optional, default to 1.
     },
     tablet: {
-      breakpoint: { max: 1024, min: 700 },
+      breakpoint: { max: 1200, min: 768 },
       items: 3,
-      slidesToSlide: 3 // optional, default to 1.
     },
 
     mobile: {
-      breakpoint: { max: 700, min: 0 },
+      breakpoint: { max: 768, min: 480 },
       items: 2,
-      slidesToSlide: 2 // optional, default to 1.
+    },
+    smallMobile: {
+      breakpoint: { max: 480, min: 0 },
+      items: 1,
     }
   };
   return (
@@ -39,7 +40,7 @@ const MultiCarousel = (props) => {
     dotListClass=""
     draggable
     focusOnSelect={false}
-    infinite
+    // infinite
     itemClass={classes['carousel-item']}
     keyBoardControl
     minimumTouchDrag={80}

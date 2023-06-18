@@ -1,3 +1,6 @@
+.header{
+    position: relative;
+}
 .search-input{
     width: 50vw;
 }
@@ -17,4 +20,18 @@
     padding: 0rem .1rem;
     color: black;
     border-radius: 30% 30%;
+}
+@media (max-width: 576px){
+    .header{
+        height: 8rem;
+        align-items: flex-start;
+    }
+    .search-container{
+        position: absolute;
+        top: 5rem;
+        width: 100%;
+    }
+    .search-input{
+        width: 85vw;
+    }
 }

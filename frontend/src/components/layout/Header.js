@@ -21,12 +21,12 @@ const Header = () => {
         navigate('/cart')
     }
   return (
-    <Navbar bg="dark" variant="dark p-3" sticky="top">
+    <Navbar className={classes.header} bg="dark" variant="dark p-3" sticky="top">
         <Container>
             <Navbar.Brand>
                 <NavLink to="/" className="nav-link fs-3"><b>Shoppee</b></NavLink>
             </Navbar.Brand>
-            <Form className="d-flex">
+            <Form className={classes['search-container']}>
                 <Form.Control
                 type="search"
                 placeholder="Search here..."
